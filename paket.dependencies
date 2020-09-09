@@ -1,0 +1,13 @@
+source https://api.nuget.org/v3/index.json
+
+storage: none
+framework: netstandard2.0
+nuget Fable.Core
+nuget Fable.Node
+nuget Fable.Promise
+nuget Thoth.Json
+
+github gretmn102/ionide-vscode-helpers src/Fable.Import.VSCode.fs
+github gretmn102/ionide-vscode-helpers src/Helpers.fs
+github gretmn102/ionide-vscode-helpers src/Fable.Import.Showdown.fs
+github gretmn102/ionide-vscode-helpers src/Fable.Import.VSCode.LanguageServer.fs

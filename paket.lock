@@ -1,0 +1,22 @@
+STORAGE: NONE
+RESTRICTION: == netstandard2.0
+NUGET
+  remote: https://api.nuget.org/v3/index.json
+    Fable.Core (3.1.5)
+      FSharp.Core (>= 4.7)
+    Fable.Node (1.0.2)
+      Fable.Core (>= 3.1.2)
+      FSharp.Core (>= 4.7)
+    Fable.Promise (2.1)
+      Fable.Core (>= 3.1.5)
+      FSharp.Core (>= 4.7)
+    FSharp.Core (4.7.2)
+    Thoth.Json (4.1)
+      Fable.Core (>= 3.1.4)
+      FSharp.Core (>= 4.7)
+GITHUB
+  remote: gretmn102/ionide-vscode-helpers
+    src/Fable.Import.Showdown.fs (8bd848e00c49b9c2c8fbaca6eb84264a3ed145c3)
+    src/Fable.Import.VSCode.fs (8bd848e00c49b9c2c8fbaca6eb84264a3ed145c3)
+    src/Fable.Import.VSCode.LanguageServer.fs (8bd848e00c49b9c2c8fbaca6eb84264a3ed145c3)
+    src/Helpers.fs (8bd848e00c49b9c2c8fbaca6eb84264a3ed145c3)

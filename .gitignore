@@ -1,0 +1,14 @@
+node_modules
+.vscode-test/
+*.vsix
+
+.fake
+.ionide
+
+/paket-files/
+obj/
+bin/
+
+/release/*.js
+/release/*/*.js
+/release/package.json

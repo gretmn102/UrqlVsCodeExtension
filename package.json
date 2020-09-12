@@ -28,6 +28,28 @@
 				"configuration": "./language-configuration.json"
 			}
         ],
+		"semanticTokenScopes": [
+			{
+				"language": "urql",
+				"scopes": {
+					"storage": ["storage.type.urql"],
+					"procedure": ["keyword.symbol.urql"],
+                    "keywordControl": ["keyword.control.urql"],
+                    "operatorArithmetic": ["keyword.operator.arithmetic.urql"],
+                    "operatorAssignment": ["keyword.operator.assignment.urql"],
+                    "operatorComparison": ["keyword.operator.comparison.urql"],
+                    "operatorRelational": ["keyword.operator.relational.urql"],
+                    "punctuationTerminatorStatement": ["punctuation.terminator.statement.urql"],
+                    "punctuationSeparatorColon": ["punctuation.separator.colon.urql"],
+                    "interpolationBegin": ["punctuation.definition.template-expression.begin.urql"],
+                    "interpolationEnd": ["punctuation.definition.template-expression.end.urql"],
+                    "constantNumericInteger": ["constant.numeric.integer.nativeint.urql"],
+                    "metaBraceSquare": ["meta.brace.square.urql"],
+                    "label": ["entity.name.label.urql"],
+                    "punctuationDefinitionComment": ["punctuation.definition.comment.urql"]
+				}
+			}
+		],
 		"commands": [
 			{
 				"command": "urql-extension.helloWorld",

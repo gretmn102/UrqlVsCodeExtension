@@ -83,16 +83,26 @@
                         "entity.name.label.urql"
                     ],
                     "punctuationDefinitionComment": [
-                        "punctuation.definition.comment.urql"
+                        "comment"
                     ]
                 }
             }
         ],
         "commands": [
             {
-                "command": "urql-extension.helloWorld",
-                "title": "Hello World"
+                "command": "urql-extension.runScript",
+                "title": "URQL: run script"
             }
-        ]
+        ],
+        "configuration":{
+            "type": "object",
+            "title": "URQL configuration",
+            "properties": {
+                "Urql.FurqPlayerFilePath": {
+                    "type": "string",
+                    "description": ""
+                }
+            }
+        }
     }
 }

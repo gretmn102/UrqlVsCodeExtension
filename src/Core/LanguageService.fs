@@ -101,9 +101,8 @@ module LanguageService =
             Data = { res.Data with
                         Info = parseInfo(res.Data.Info) } }
 
-    
+
     let getHighlighting (f) =
-        printfn "getHighlighting"
         match client with
         | None -> Promise.lift (Error "client not ready")
         | Some cl ->
@@ -202,51 +201,114 @@ module LanguageService =
                 return! dotnetNotFound ()
     }
 
-    let buildUrqlGen cmd =
-        let editor = vscode.window.activeTextEditor
-        editor.document.save()
-        |> Promise.bind (fun isSaved ->
-            if isSaved then
-                client
-                |> Option.map (fun client ->
-                    client.sendRequest(cmd, editor.document.uri.fsPath)
-                    |> Promise.bind (fun res ->
-                        // Ну и зачем так делать? Не проще ли было сделать какой-нибудь преобразователь с Newtonsoft.Json в Fable.Core.JsInterop и обратно? Идиотизм какой-то.
-                        let case : string = res?case |> unbox
-                        let fields : string [] = res?fields |> unbox
-
-                        match case with
-                        | "Choice1Of2" ->
-                            vscode.window.showErrorMessage fields.[0]
-                        | "Choice2Of2" ->
-                            // vscode.window.showInformationMessage fields.[0]
-                            Promise.empty
-                        | _ ->
-                            Promise.empty
-                    )
-                )
-                |> Option.defaultValue Promise.empty
+    let getFile title =
+        let openDialogOptions =
+            { new OpenDialogOptions with
+                member __.canSelectFiles
+                    with get () = Some true
+                    and set x = failwith "set canSelectFiles is not implemented"
+                member __.canSelectFolders
+                    with get () = Some false
+                    and set x = failwith "set canSelectFolders is not implemented"
+                member __.canSelectMany
+                    with get () = Some false
+                    and set x = failwith "set canSelectMany is not implemented"
+                member __.defaultUri
+                    with get () = None
+                    and set x = failwith "set defaultUri is not implemented"
+                member __.filters
+                    with get () = None
+                    and set x = failwith "set filters is not implemented"
+                member __.openLabel
+                    with get () = Some title
+                    and set x = failwith "set openLabel is not implemented"
+            }
+        vscode.window.showOpenDialog openDialogOptions
+        |> Promise.map (fun x ->
+            if isNull x then // nothing selected
+                None
             else
-                Promise.empty
+                match Array.tryHead x with
+                | Some uri ->
+                    Some uri
+                | None -> None // what happened here?
         )
-
-    let buildUrql () = buildUrqlGen "urql/build"
-    let buildUrqlAndRun () = buildUrqlGen "urql/buildAndRun"
+    let rec runScript furqPlayerFilePath =
+        let key = "Urql.FurqPlayerFilePath"
+        let selectPath msg =
+            let selectedLabel = "Select FireURQ path"
+            vscode.window.showErrorMessage(msg, [|selectedLabel|])
+            |> Promise.bind (fun x ->
+                if x = selectedLabel then
+                    getFile "Set FireURQ path"
+                    |> Promise.bind (fun path ->
+                        match path with
+                        | Some uri ->
+                            Configuration.setGlobal key uri.fsPath
+                            |> Promise.map (fun () ->
+                                Some uri.fsPath
+                            )
+                        | None -> Promise.lift None
+                    )
+                else
+                    Promise.lift None
+            )
+        let furqPlayerFilePath =
+            match furqPlayerFilePath with
+            | None -> 
+                match Configuration.tryGet key with
+                | None ->
+                    selectPath "Urql.FurqPlayerFilePath is null"
+                | Some furqPlayerFilePath -> Promise.lift (Some furqPlayerFilePath)
+            | Some furqPlayerFilePath -> Promise.lift (Some furqPlayerFilePath)
+        let f furqPlayerFilePath =
+            promise {
+                Node.Api.fs.exists(!^furqPlayerFilePath, fun furqPlayerExists ->
+                    if furqPlayerExists then
+                        let editor = vscode.window.activeTextEditor
+                        editor.document.save()
+                        |> Promise.bind (fun isSaved ->
+                            if Environment.isWin then
+                                sprintf "\"%s\" -d" editor.document.fileName
+                                |> Process.spawn furqPlayerFilePath ""
+                                |> ignore
+                                Promise.lift ()
+                            else
+                                Environment.tryGetTool "wine"
+                                |> Promise.bind (
+                                    function
+                                    | None ->
+                                        vscode.window.showErrorMessage "Wine not found, so FireURQ cannot run"
+                                        |> Promise.map (fun _ -> ())
+                                    | Some winePath ->
+                                        sprintf "\"%s\" \"%s\" -d" furqPlayerFilePath editor.document.fileName
+                                        |> Process.spawn winePath "LC_ALL=ru_RU.UTF-8"
+                                        |> ignore
+                                        Promise.lift ()
+                                )
+                        )
+                        |> ignore
+                    else
+                        selectPath (sprintf "FireUrq player not exists at '%s'" furqPlayerFilePath)
+                        |> Promise.map runScript
+                        |> ignore
+                )
+            }
+        furqPlayerFilePath
+        |> Promise.bind (
+            function
+            | None -> Promise.lift ()
+            | Some furqPlayerFilePath -> f furqPlayerFilePath)
 
     let readyClient (ctx : ExtensionContext) (cl: LanguageClient) =
         cl.onReady ()
         |> Promise.map (fun _ ->
             let disposable =
-                vscode.commands.registerCommand("extension.build",
-                    buildUrql
+                vscode.commands.registerCommand("urql-extension.runScript",
+                    runScript
                     |> unbox<Func<obj, obj>>
                 )
-            ctx.subscriptions.Add(disposable)
-            let disposable =
-                vscode.commands.registerCommand("extension.buildAndRun",
-                    buildUrqlAndRun
-                    |> unbox<Func<obj, obj>>
-                )
+
             ctx.subscriptions.Add(disposable)
 
             vscode.window.showInformationMessage "client is ready" |> ignore

@@ -20,3 +20,14 @@ GITHUB
     src/Fable.Import.VSCode.fs (8bd848e00c49b9c2c8fbaca6eb84264a3ed145c3)
     src/Fable.Import.VSCode.LanguageServer.fs (8bd848e00c49b9c2c8fbaca6eb84264a3ed145c3)
     src/Helpers.fs (8bd848e00c49b9c2c8fbaca6eb84264a3ed145c3)
+GIT
+  remote: https://github.com/gretmn102/UrqlLsp
+     (9c1191845f22753740196a811f3f4169b5510519)
+      build: build.cmd
+      os: win
+     (9c1191845f22753740196a811f3f4169b5510519)
+      build: build.sh
+      os: linux
+     (9c1191845f22753740196a811f3f4169b5510519)
+      build: build.sh
+      os: osx

@@ -11,3 +11,7 @@ github gretmn102/ionide-vscode-helpers src/Fable.Import.VSCode.fs
 github gretmn102/ionide-vscode-helpers src/Helpers.fs
 github gretmn102/ionide-vscode-helpers src/Fable.Import.Showdown.fs
 github gretmn102/ionide-vscode-helpers src/Fable.Import.VSCode.LanguageServer.fs
+
+git https://github.com/gretmn102/UrqlLsp master build:"build.cmd", OS: win
+git https://github.com/gretmn102/UrqlLsp master build:"build.sh", OS: linux
+git https://github.com/gretmn102/UrqlLsp master build:"build.sh", OS: osx

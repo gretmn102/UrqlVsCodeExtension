@@ -9,6 +9,11 @@ node_modules
 obj/
 bin/
 
+/temp/
+
+/release/*.cmd
 /release/*.js
 /release/*/*.js
-/release/package.json
+/release/CHANGELOG.md
+/release/README.md
+/release/LICENSE.md

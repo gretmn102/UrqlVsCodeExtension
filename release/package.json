@@ -1,0 +1,98 @@
+{
+    "name": "urql",
+    "displayName": "URQL",
+    "description": "URQ Language Support",
+    "publisher": "Fering",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.48.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gretmn102/UrqlVsCodeExtension"
+    },
+    "license": "SEE LICENSE IN LICENSE.md",
+    "icon": "icon.png",
+    "categories": [
+        "Linters",
+        "Programming Languages",
+        "Snippets"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./Extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "urql",
+                "aliases": [
+                    "URQL",
+                    "urql"
+                ],
+                "extensions": [
+                    ".qst"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "semanticTokenScopes": [
+            {
+                "language": "urql",
+                "scopes": {
+                    "storage": [
+                        "storage.type.urql"
+                    ],
+                    "procedure": [
+                        "keyword.symbol.urql"
+                    ],
+                    "keywordControl": [
+                        "keyword.control.urql"
+                    ],
+                    "operatorArithmetic": [
+                        "keyword.operator.arithmetic.urql"
+                    ],
+                    "operatorAssignment": [
+                        "keyword.operator.assignment.urql"
+                    ],
+                    "operatorComparison": [
+                        "keyword.operator.comparison.urql"
+                    ],
+                    "operatorRelational": [
+                        "keyword.operator.relational.urql"
+                    ],
+                    "punctuationTerminatorStatement": [
+                        "punctuation.terminator.statement.urql"
+                    ],
+                    "punctuationSeparatorColon": [
+                        "punctuation.separator.colon.urql"
+                    ],
+                    "interpolationBegin": [
+                        "punctuation.definition.template-expression.begin.urql"
+                    ],
+                    "interpolationEnd": [
+                        "punctuation.definition.template-expression.end.urql"
+                    ],
+                    "constantNumericInteger": [
+                        "constant.numeric.integer.nativeint.urql"
+                    ],
+                    "metaBraceSquare": [
+                        "meta.brace.square.urql"
+                    ],
+                    "label": [
+                        "entity.name.label.urql"
+                    ],
+                    "punctuationDefinitionComment": [
+                        "punctuation.definition.comment.urql"
+                    ]
+                }
+            }
+        ],
+        "commands": [
+            {
+                "command": "urql-extension.helloWorld",
+                "title": "Hello World"
+            }
+        ]
+    }
+}
